@@ -1,0 +1,1 @@
+This is simple nodelet to convert 16-bit image stream to 8-bit.
