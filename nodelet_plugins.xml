@@ -1,0 +1,7 @@
+<library path="lib/libimage16to8bit">
+  <class name="image16to8bit/Converter" type="image16to8bit::Converter" base_class_type="nodelet::Nodelet">
+    <description>
+      This is nodelet to convert 16bit image streams to 8bit encoding.
+    </description>
+  </class>
+</library>
