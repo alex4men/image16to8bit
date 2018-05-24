@@ -1,6 +1,12 @@
 <launch>
+  <arg name="camera" default="camera" />
+
   <node pkg="nodelet" type="nodelet" name="standalone_nodelet"  args="manager" output="screen"/>
 
   <node pkg="nodelet" type="nodelet" name="Converter" args="load image16to8bit/Converter standalone_nodelet" output="screen">
+    <remap from="image" to="$(arg camera)/confidence/image"/>
+    <remap from="camera_info" to="$(arg camera)/confidence/camera_info"/>
+    <remap from="~image" to="$(arg camera)/confidenceS/image"/>
+    <remap from="~camera_info" to="$(arg camera)/confidenceS/camera_info"/>
   </node>
 </launch>
