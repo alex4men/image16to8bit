@@ -1,12 +1,32 @@
 <launch>
   <arg name="camera" default="camera" />
 
-  <node pkg="nodelet" type="nodelet" name="standalone_nodelet"  args="manager" output="screen"/>
+  <node pkg="nodelet" type="nodelet" name="standalone_nodelet" args="manager" output="screen"/>
 
   <node pkg="nodelet" type="nodelet" name="Converter" args="load image16to8bit/Converter standalone_nodelet" output="screen">
     <remap from="image" to="$(arg camera)/confidence/image"/>
     <remap from="camera_info" to="$(arg camera)/confidence/camera_info"/>
-    <remap from="~image" to="$(arg camera)/confidenceS/image"/>
-    <remap from="~camera_info" to="$(arg camera)/confidenceS/camera_info"/>
+    <remap from="~image" to="$(arg camera)/confidence_8/image"/>
+    <remap from="~camera_info" to="$(arg camera)/confidence_8/camera_info"/>
+  </node>
+
+  <node pkg="nodelet" type="nodelet" name="resize_conf" args="load image_proc/resize standalone_nodelet" output="screen">
+    <param name="scale_height" type="double" value="2.0"/>
+    <param name="scale_width" type="double" value="2.0"/>
+
+    <remap from="in_image" to="$(arg camera)/confidence_8/image"/>
+    <remap from="camera_info" to="$(arg camera)/confidence_8/camera_info"/>
+    <remap from="~out_image" to="$(arg camera)/confidence_s/image"/>
+    <remap from="~camera_info" to="$(arg camera)/confidence_s/camera_info"/>
+  </node>
+
+  <node pkg="nodelet" type="nodelet" name="resize_rgb" args="load image_proc/resize standalone_nodelet" output="screen">
+    <param name="scale_height" type="double" value="1"/>
+    <param name="scale_width" type="double" value="1"/>
+
+    <remap from="in_image" to="$(arg camera)/rgb/image_raw"/>
+    <remap from="camera_info" to="$(arg camera)/rgb/camera_info"/>
+    <remap from="~out_image" to="$(arg camera)/rgb_s/image_raw"/>
+    <remap from="~camera_info" to="$(arg camera)/rgb_s/camera_info"/>
   </node>
 </launch>
